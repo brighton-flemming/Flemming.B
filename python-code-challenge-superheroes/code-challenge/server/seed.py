@@ -74,7 +74,6 @@ def seed_database():
 
     for hero in Hero.query.all():
       for _ in range(randint(1,3)):
-          power = Power.query.get(randint(1, len(powers_data)))
           combination = (hero.id, power.id)
           strength = choice(strengths)
 
