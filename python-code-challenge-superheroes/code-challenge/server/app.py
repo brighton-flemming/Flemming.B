@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-heroes= [
+heroes = [
     {"name": "Kamala Khan", "super_name": "Ms. Marvel"},
     {"name": "Doreen Green", "super_name": "Squirrel Girl"},
     {"name": "Gwen Stacy", "super_name": "Spider-Gwen"},
@@ -44,6 +44,7 @@ def get_heroes():
 @app.route('/heroes/<int:hero_id>', methods=['GET'])
 def get_hero(hero_id):
     hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
+
     if hero is not None:
         return jsonify(hero)
     else:
@@ -60,6 +61,8 @@ def get_power(power_id):
         return jsonify(power)
     else:
         return jsonify({"error":"Power not Found"}), 404
+    
+
 @app.route('/powers/<int:power_id>', methods=['PATCH'])
 def update_power(power_id):
     updated_description = request.json.get('description')
@@ -72,9 +75,49 @@ def update_power(power_id):
 
             return jsonify(power)
         else:
-            return jsonify({"error":["Description Required"]}), 400
+            return jsonify({"error":["Validation Errors"]}), 400
     else:
         return jsonify({"error":"Power Not Found"}), 404
+    
+def is_valid_strength(strength):
+    valid_strengths = ['Strong', 'Weak', 'Average']
+    return strength in valid_strengths
+    
+@app.route('/hero_powers', methods=['POST'])
+def add_hero_power():
+    hero_power_data = request.json
+    strength = hero_power_data.get('strength')
+    power_id = hero_power_data.get('power_id')
+    hero_id = hero_power_data.get('hero_id')
+
+    if not is_valid_strength(strength):
+        return jsonify({"errors": ["Validation Errors"]}), 400
+    
+    hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
+    
+    power = next((power for power in powers if power['id'] == power_id), None)
+
+    if hero is not None and power is not None:
+
+        hero_power = {
+            "strength": strength,
+            "power_id":power_id,
+            "hero_id":hero_id,
+        }
+
+        hero['powers'].append(hero_power)
+
+        return jsonify(hero)
+    else:
+        return jsonify({"errors": ["Validation Errors"]}), 400
+
+    
+
+    
+
+
+    
+
 
 
 
