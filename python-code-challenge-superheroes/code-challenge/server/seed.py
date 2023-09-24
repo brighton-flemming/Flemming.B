@@ -70,14 +70,23 @@ def seed_database():
     AddingPowers()
 
     strengths = ["Strong", "Weak", "Average"]
+    added_combinations = set()
 
     for hero in Hero.query.all():
       for _ in range(randint(1,3)):
           power = Power.query.get(randint(1, len(powers_data)))
+          combination = (hero.id, power.id)
           strength = choice(strengths)
 
-          hero_power = HeroPower(hero=hero, power=power, strength=strength)
+          hero_id = hero.id
+          power_id = power.id
+
+
+      if combination not in added_combinations:
+          hero_power = HeroPower(strength=strength, hero_id=hero_id, power_id=power_id)
           db.session.add(hero_power)
+          added_combinations.add(combination)
+          break
 
     db.session.commit()
 

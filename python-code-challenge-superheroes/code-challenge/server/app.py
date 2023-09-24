@@ -3,7 +3,7 @@
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 
-from models import db, Hero
+from models import db, Hero, Power
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -43,7 +43,7 @@ def get_heroes():
 
 @app.route('/heroes/<int:hero_id>', methods=['GET'])
 def get_hero(hero_id):
-    hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
+    hero = next((hero for hero in heroes if Hero.id == hero_id), None)
 
     if hero is not None:
         return jsonify(hero)
@@ -56,7 +56,7 @@ def get_powers():
 
 @app.route('/powers/<int:power_id>', methods=['GET'])
 def get_power(power_id):
-    power = next((power for power in powers if power['id'] == power_id), None)
+    power = next((power for power in powers if Power.id == power_id), None)
     if power is not None:
         return jsonify(power)
     else:
@@ -67,11 +67,11 @@ def get_power(power_id):
 def update_power(power_id):
     updated_description = request.json.get('description')
 
-    power = next((power for power in powers if power['id'] == power_id), None)
+    power = next((power for power in powers if Power.id  == power_id), None)
 
     if power is not None:
         if updated_description is not None:
-            power['description'] = updated_description
+            power.description = updated_description
 
             return jsonify(power)
         else:
@@ -93,9 +93,9 @@ def add_hero_power():
     if not is_valid_strength(strength):
         return jsonify({"errors": ["Validation Errors"]}), 400
     
-    hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
+    hero = next((hero for hero in heroes if Hero.id  == hero_id), None)
     
-    power = next((power for power in powers if power['id'] == power_id), None)
+    power = next((power for power in powers if Power.id  == power_id), None)
 
     if hero is not None and power is not None:
 
@@ -105,7 +105,7 @@ def add_hero_power():
             "hero_id":hero_id,
         }
 
-        hero['powers'].append(hero_power)
+        hero.powers.append(hero_power)
 
         return jsonify(hero)
     else:
