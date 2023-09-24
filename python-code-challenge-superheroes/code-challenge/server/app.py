@@ -41,13 +41,25 @@ def home():
 def get_heroes():
     return jsonify(heroes)
 
-@app.route('/heroes/<int:heroes.id>', methods=['GET'])
+@app.route('/heroes/<int:hero_id>', methods=['GET'])
 def get_hero(hero_id):
     hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
     if hero is not None:
         return jsonify(hero)
     else:
         return jsonify({"error": "Hero Not Found"}), 404
+    
+@app.route('/powers', methods=['GET'])
+def get_powers():
+    return jsonify(powers)
+
+@app.route('powers/<int:power_id>', methods=['GET'])
+def get_power(power_id):
+    power = next((power for power in powers if power['id'] == power_id), None)
+    if power is not None:
+        return jsonify(power)
+    else:
+        return jsonify({"error":"Power not Found"}), 404
 
 
 

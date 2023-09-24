@@ -42,7 +42,7 @@ class Power(db.Model):
 
     @validates('description')
     def validate_description(self, key, value):
-        if not value or len(value) < value:
+        if not value or len(value) < 20:
             raise ValueError("Description has to be at least 20 characters long.")
         return value
 
