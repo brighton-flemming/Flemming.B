@@ -11,7 +11,7 @@ class Hero(db.Model):
     super_name = db.Column(db.String(255))
 
     powers = db.relationship('Power',secondary='hero_power', backref='hero')
-    heroes_power = db.relationship('HeroPower', back_ref ='hero')
+    heroes_power = db.relationship('HeroPower', backref ='hero')
 
 class HeroPower(db.Model):
     __tablename__ = 'hero_power'

@@ -33,9 +33,22 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 
+@app.route('/')
+def home():
+    return f"<h1>Welcome to my Flask Superhero Application</h1>"
+
 @app.route('/heroes', methods=['GET'])
 def get_heroes():
     return jsonify(heroes)
+
+@app.route('/heroes/<int:heroes.id>', methods=['GET'])
+def get_hero(hero_id):
+    hero = next((hero for hero in heroes if hero['id'] == hero_id), None)
+    if hero is not None:
+        return jsonify(hero)
+    else:
+        return jsonify({"error": "Hero Not Found"}), 404
+
 
 
 if __name__ == '__main__':
