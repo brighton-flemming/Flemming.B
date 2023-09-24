@@ -1,8 +1,14 @@
 
 from random import randint, choice
 
-from app.app import db
-from app.models import Hero, HeroPower, Power
+from app import db, app
+from models import Hero, HeroPower, Power
+
+with app.app_context():
+
+    Hero.query.delete()
+    HeroPower.query.delete()
+    Power.query.delete()
 
 
 def SeedingPowers():

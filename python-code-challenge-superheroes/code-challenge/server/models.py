@@ -9,16 +9,18 @@ class Hero(db.Model):
     name = db.Column(db.String, nullable=False)
     super_name = db.Column(db.String)
 
-    powers = db.relationship('Power',secondary='hero_power' back_populates='heroes')
+    powers = db.relationship('Power',secondary='hero_power', backref='hero')
 
 class HeroPower(db.Model):
     __tablename__ = 'hero_power'
 
+    id = db.Column(db.Integer, primary_key=True)
+    strength = db.Column(db.String)
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), primary_key=True)
     power_id = db.Column(db.Integer, db.ForeignKey('powers.id'), primary_key=True)
 
-    hero = db.relationship('Hero', back_populates='heroes')
-    power = db.relationship('Power', back_populates='powers') 
+    heroes_power = db.relationship('Hero', backref='hero')
+    powers_of_heroes = db.relationship('Power', backref='power') 
 
 class Power(db.Model):
     __tablename__ = 'powers'
@@ -27,9 +29,8 @@ class Power(db.Model):
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String)
 
-    heroes = db.relationship('Hero', secondary='hero_power', back_populates='powers')
+    powers = db.relationship('Hero', secondary='hero_power', backref='power')
 
 
     
 
-# add any models you may need. 
