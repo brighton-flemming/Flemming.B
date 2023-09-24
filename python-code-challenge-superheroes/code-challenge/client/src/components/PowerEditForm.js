@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams, useHistory } from "react-router-dom";
 
 function PowerEditForm() {
   const [{ data: power, errors, status }, setPower] = useState({

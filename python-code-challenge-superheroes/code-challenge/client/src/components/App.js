@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router";
+import { Routes, Route } from "react-router";
 import Header from "./Header";
 import Hero from "./Hero";
 import Home from "./Home";
@@ -11,7 +11,7 @@ function App() {
     <div>
       <Header />
       <main>
-        <Switch>
+        <Routes>
           <Route exact path="/hero_powers/new">
             <HeroPowerForm />
           </Route>
@@ -27,7 +27,7 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-        </Switch>
+        </Routes>
       </main>
     </div>
   );
