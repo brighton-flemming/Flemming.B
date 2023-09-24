@@ -80,7 +80,6 @@ def seed_database():
           hero_id = hero.id
           power_id = power.id
 
-
       if combination not in added_combinations:
           hero_power = HeroPower(strength=strength, hero_id=hero_id, power_id=power_id)
           db.session.add(hero_power)
