@@ -48,16 +48,19 @@ def get_heroes():
 
 @app.route('/heroes/<int:hero_id>', methods=['GET'])
 def get_hero(hero_id):
-    hero = next((hero for hero in heroes if Hero.id == hero_id), None)
+    hero = Hero.query.get(hero_id)
 
     if hero is not None:
-        return jsonify(hero)
+        return jsonify({'id':hero.id, 'name': hero.name, 'super_name':hero.super_name})
     else:
         return jsonify({"error": "Hero Not Found"}), 404
+
     
 @app.route('/powers', methods=['GET'])
 def get_powers():
-    return jsonify(powers)
+    powers = Power.query.all()
+    power_list = [{'id':power.id, 'name': power.name, 'description':power.description} for power in powers]
+    return jsonify(power_list)
 
 @app.route('/powers/<int:power_id>', methods=['GET'])
 def get_power(power_id):
