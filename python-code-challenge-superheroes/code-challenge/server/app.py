@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+
 
 from models import db, Hero, Power
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+
 migrate = Migrate(app, db)
 
 db.init_app(app)
@@ -64,28 +64,30 @@ def get_powers():
 
 @app.route('/powers/<int:power_id>', methods=['GET'])
 def get_power(power_id):
-    power = next((power for power in powers if Power.id == power_id), None)
+    power = Power.query.get(power_id)
+
     if power is not None:
-        return jsonify(power)
+        return jsonify({'id':power.id, 'name': power.name, 'description':power.description})
     else:
         return jsonify({"error":"Power not Found"}), 404
     
 
 @app.route('/powers/<int:power_id>', methods=['PATCH'])
 def update_power(power_id):
-    updated_description = request.json.get('description')
+    power = Power.query.get(power_id)
 
-    power = next((power for power in powers if Power.id  == power_id), None)
+    if not power :
+         return jsonify({"error":"Power Not Found"}), 404
+    data = request.json
+    updated_description = data.get('description')
 
-    if power is not None:
-        if updated_description is not None:
+    if updated_description is not None:
             power.description = updated_description
-
-            return jsonify(power)
-        else:
-            return jsonify({"error":["Validation Errors"]}), 400
+            db.session.commit()
+            return jsonify({"message":"Power updated successfully"})
     else:
-        return jsonify({"error":"Power Not Found"}), 404
+            return jsonify({"error":["Description is required"]}), 400
+       
     
 def is_valid_strength(strength):
     valid_strengths = ['Strong', 'Weak', 'Average']
