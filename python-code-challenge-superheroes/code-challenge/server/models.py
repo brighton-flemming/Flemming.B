@@ -26,7 +26,6 @@ class Hero(db.Model):
 class HeroPower(db.Model):
     __tablename__ = 'hero_power'
 
-  
     strength = db.Column(db.String)
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), primary_key=True, nullable=True)
     power_id = db.Column(db.Integer, db.ForeignKey('powers.id'), primary_key=True,nullable=True)

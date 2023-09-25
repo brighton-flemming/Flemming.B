@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_migrate import Migrate
 
 
-from models import db, Hero, Power
+from models import db, Hero, Power, HeroPower
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -93,33 +93,28 @@ def is_valid_strength(strength):
     valid_strengths = ['Strong', 'Weak', 'Average']
     return strength in valid_strengths
     
-@app.route('/hero_powers', methods=['POST'])
-def add_hero_power():
-    hero_power_data = request.json
-    strength = hero_power_data.get('strength')
-    power_id = hero_power_data.get('power_id')
-    hero_id = hero_power_data.get('hero_id')
+@app.route('/hero_powers/<int:hero_id>', methods=['POST'])
+def add_hero_power(hero_id):
 
-    if not is_valid_strength(strength):
-        return jsonify({"errors": ["Validation Errors"]}), 400
+    hero = Hero.query.get(hero_id)
+
+    if not hero:
+        return jsonify({"error": "Hero Not Found"})
     
-    hero = next((hero for hero in heroes if Hero.id  == hero_id), None)
+    data = request.json
+    strength = data.get('strength')
+    power_id = data.get('power_id')
+
+    if not strength or not power_id:
+        return jsonify({"error": "Strength and power_id are required"})
     
-    power = next((power for power in powers if Power.id  == power_id), None)
+    hero_power = HeroPower(strength=strength, hero_id=hero_id, power_id=power_id)
+    db.session.add(hero_power)
+    db.commit()
 
-    if hero is not None and power is not None:
+    return jsonify({"message":"Hero Power added successfully."})
 
-        hero_power = {
-            "strength": strength,
-            "power_id":power_id,
-            "hero_id":hero_id,
-        }
 
-        hero.powers.append(hero_power)
-
-        return jsonify(hero)
-    else:
-        return jsonify({"errors": ["Validation Errors"]}), 400
 
     
 
