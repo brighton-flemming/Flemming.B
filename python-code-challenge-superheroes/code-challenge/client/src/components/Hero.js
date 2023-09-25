@@ -32,13 +32,17 @@ function Hero() {
       <h2>AKA {hero.name}</h2>
 
       <h3>Powers:</h3>
+      {hero.powers && hero.powers.length > 0 (
+      <>
       <ul>
         {hero.powers.map((power) => (
-          <li key={hero.id}>
+          <li key={power.id}>
             <Link to={`/powers/${power.id}`}>{power.name}</Link>
           </li>
         ))}
       </ul>
+      </>
+       )}
 
       <Link to="/hero_powers/new">Add Hero Power</Link>
     </section>
