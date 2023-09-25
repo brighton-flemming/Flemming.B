@@ -29,7 +29,7 @@ function HeroPowerForm() {
       power_id: powerId,
       strength,
     };
-    fetch("/hero_powers", {
+    fetch("/hero_powers/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

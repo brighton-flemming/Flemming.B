@@ -74,17 +74,18 @@ def is_valid_strength(strength):
     valid_strengths = ['Strong', 'Weak', 'Average']
     return strength in valid_strengths
     
-@app.route('/hero_powers/<int:hero_id>', methods=['POST'])
-def add_hero_power(hero_id):
+@app.route('/hero_powers/new', methods=['POST'])
+def add_hero_power():
+    data = request.json
+    strength = data.get('strength')
+    power_id = data.get('power_id')
+    hero_id = data.get('hero_id')
 
     hero = Hero.query.get(hero_id)
 
     if not hero:
         return jsonify({"error": "Hero Not Found"})
     
-    data = request.json
-    strength = data.get('strength')
-    power_id = data.get('power_id')
 
     if not strength or not power_id:
         return jsonify({"error": "Strength and power_id are required"})
@@ -94,7 +95,7 @@ def add_hero_power(hero_id):
     if not power:
          return jsonify({"error":"Power Not Found"})
     
-    hero_power = HeroPower(strength=strength, hero=hero, power=power)
+    hero_power = jsonify(HeroPower(strength=strength, hero=hero, power=power))
     db.session.add(hero_power)
     db.commit()
 

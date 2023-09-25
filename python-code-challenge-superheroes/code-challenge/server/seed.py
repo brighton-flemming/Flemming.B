@@ -21,7 +21,17 @@ def seed_database():
     {"name": "super strength", "description": "gives the wielder super-human strengths"},
     {"name": "flight", "description": "gives the wielder the ability to fly through the skies at supersonic speed"},
     {"name": "super human senses", "description": "allows the wielder to use her senses at a super-human level"},
-    {"name": "elasticity", "description": "can stretch the human body to extreme lengths"}
+    {"name": "elasticity", "description": "can stretch the human body to extreme lengths"},
+    {"name": "telekinesis", "description": "the power to move objects with one's mind"},
+    {"name": "invisibility", "description": "the ability to become invisible to the naked eye"},
+    {"name": "telepathy", "description": "the power to read and communicate with others' thoughts"},
+    {"name": "time manipulation", "description": "the ability to control and manipulate time"},
+    {"name": "energy projection", "description": "can project and control various forms of energy"},
+    {"name": "shapeshifting", "description": "the power to change one's appearance and form"},
+    {"name": "immortality", "description": "the inability to die from natural causes"},
+    {"name": "mind control", "description": "can control the thoughts and actions of others"},
+    {"name": "intangibility", "description": "the ability to become intangible and pass through objects"},
+    {"name": "pyrokinesis", "description": "the power to create and control fire with one's mind"}
 ]
 
     for power_info in powers_data:
@@ -50,7 +60,17 @@ def seed_database():
     {"name": "Jean Grey", "super_name": "Dark Phoenix"},
     {"name": "Ororo Munroe", "super_name": "Storm"},
     {"name": "Kitty Pryde", "super_name": "Shadowcat"},
-    {"name": "Elektra Natchios", "super_name": "Elektra"}
+    {"name": "Elektra Natchios", "super_name": "Elektra"},
+    {"name": "Peter Parker", "super_name": "Spider-Man"},
+    {"name": "Bruce Wayne", "super_name": "Batman"},
+    {"name": "Clark Kent", "super_name": "Superman"},
+    {"name": "Diana Prince", "super_name": "Wonder Woman"},
+    {"name": "Barry Allen", "super_name": "The Flash"},
+    {"name": "Arthur Curry", "super_name": "Aquaman"},
+    {"name": "Tony Stark", "super_name": "Iron Man"},
+    {"name": "Natasha Romanoff", "super_name": "Black Widow"},
+    {"name": "Steve Rogers", "super_name": "Captain America"},
+    {"name": "Bruce Banner", "super_name": "The Hulk"}
 ]
 
     for hero_info in heroes_data:
