@@ -2,6 +2,7 @@
 
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 from models import db, Hero, Power
 
@@ -9,29 +10,31 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-heroes = [
-    {"name": "Kamala Khan", "super_name": "Ms. Marvel"},
-    {"name": "Doreen Green", "super_name": "Squirrel Girl"},
-    {"name": "Gwen Stacy", "super_name": "Spider-Gwen"},
-    {"name": "Janet Van Dyne", "super_name": "The Wasp"},
-    {"name": "Wanda Maximoff", "super_name": "Scarlet Witch"},
-    {"name": "Carol Danvers", "super_name": "Captain Marvel"},
-    {"name": "Jean Grey", "super_name": "Dark Phoenix"},
-    {"name": "Ororo Munroe", "super_name": "Storm"},
-    {"name": "Kitty Pryde", "super_name": "Shadowcat"},
-    {"name": "Elektra Natchios", "super_name": "Elektra"}
-]
-
-powers = [
-    {"name": "super strength", "description": "gives the wielder super-human strengths"},
-    {"name": "flight", "description": "gives the wielder the ability to fly through the skies at supersonic speed"},
-    {"name": "super human senses", "description": "allows the wielder to use her senses at a super-human level"},
-    {"name": "elasticity", "description": "can stretch the human body to extreme lengths"}
-]
-
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 db.init_app(app)
+
+# heroes = [
+#     {"name": "Kamala Khan", "super_name": "Ms. Marvel"},
+#     {"name": "Doreen Green", "super_name": "Squirrel Girl"},
+#     {"name": "Gwen Stacy", "super_name": "Spider-Gwen"},
+#     {"name": "Janet Van Dyne", "super_name": "The Wasp"},
+#     {"name": "Wanda Maximoff", "super_name": "Scarlet Witch"},
+#     {"name": "Carol Danvers", "super_name": "Captain Marvel"},
+#     {"name": "Jean Grey", "super_name": "Dark Phoenix"},
+#     {"name": "Ororo Munroe", "super_name": "Storm"},
+#     {"name": "Kitty Pryde", "super_name": "Shadowcat"},
+#     {"name": "Elektra Natchios", "super_name": "Elektra"}
+# ]
+
+# powers = [
+#     {"name": "super strength", "description": "gives the wielder super-human strengths"},
+#     {"name": "flight", "description": "gives the wielder the ability to fly through the skies at supersonic speed"},
+#     {"name": "super human senses", "description": "allows the wielder to use her senses at a super-human level"},
+#     {"name": "elasticity", "description": "can stretch the human body to extreme lengths"}
+# ]
+
 
 @app.route('/')
 def home():
@@ -39,7 +42,9 @@ def home():
 
 @app.route('/heroes', methods=['GET'])
 def get_heroes():
-    return jsonify(heroes)
+    heroes = Hero.query.all()
+    hero_list = [{'id':hero.id, 'name': hero.name, 'super_name':hero.super_name}for hero in heroes]
+    return jsonify(hero_list)
 
 @app.route('/heroes/<int:hero_id>', methods=['GET'])
 def get_hero(hero_id):
